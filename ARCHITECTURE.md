@@ -6,48 +6,6 @@ ValkeyFlight is designed as a high-performance, zero-copy data pipeline system t
 
 ValkeyFlight addresses the need for high-throughput data processing without the overhead of a full workflow engine like Temporal. It focuses on efficient batch processing with reliable tracking and retry mechanics.
 
-```mermaid
-flowchart TB
-    subgraph "Client Applications"
-        Client1[Client 1]
-        Client2[Client 2]
-        ClientN[Client N]
-    end
-
-    subgraph "Data Plane"
-        FlightServer[Flight Server]
-        BatchStore[(In-Memory Batch Store)]
-        FlightServer --- BatchStore
-    end
-
-    subgraph "Control Plane"
-        Coordinator[Coordinator]
-        ValKey[(Valkey)]
-        Coordinator --- ValKey
-    end
-
-    subgraph "Processing Plane"
-        Worker1[Worker 1]
-        Worker2[Worker 2]
-        WorkerN[Worker N]
-    end
-
-    Client1 & Client2 & ClientN -->|1. Store Record Batch| FlightServer
-    Client1 & Client2 & ClientN -->|2. Register Batch| Coordinator
-    
-    Coordinator -->|3. Track Pending Batches| ValKey
-    
-    Worker1 & Worker2 & WorkerN -->|4. Poll for Batches| Coordinator
-    Worker1 & Worker2 & WorkerN -->|5. Fetch Batch Data| FlightServer
-    Worker1 & Worker2 & WorkerN -->|6. Update Status| Coordinator
-    
-    class FlightServer,Coordinator,Worker1,Worker2,WorkerN service;
-    class BatchStore,ValKey database;
-    
-    classDef service fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef database fill:#bbf,stroke:#333,stroke-width:2px;
-```
-
 ## Core Components
 
 ### 1. Apache Arrow Flight Server
