@@ -12,37 +12,6 @@ The system consists of the following components:
 
 3. **Worker Pool**: Worker service that polls for pending batches, processes them, and handles retry logic with exponential backoff.
 
-```mermaid
-graph TD
-    Client[Client Application] -->|1. Store Batch| FlightServer
-    FlightServer[Flight Server] -->|2. Return Batch ID| Client
-    Client -->|3. Register Batch| Coordinator
-    Coordinator[Valkey Coordinator] -->|4. Store Metadata| Valkey[(Valkey)]
-    Worker[Worker Pool] -->|5. Poll for Batches| Coordinator
-    Worker -->|6. Get Batch| FlightServer
-    Worker -->|7. Process Batch| Worker
-    Worker -->|8. Update Status| Coordinator
-    
-    subgraph "Zero-Copy Data Plane"
-        FlightServer
-    end
-    
-    subgraph "Metadata Coordination Plane"
-        Coordinator
-        Valkey
-    end
-    
-    subgraph "Processing Plane"
-        Worker
-    end
-    
-    class FlightServer,Worker,Coordinator service;
-    class Valkey database;
-    
-    classDef service fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef database fill:#bbf,stroke:#333,stroke-width:2px;
-```
-
 ## Features
 
 - **Zero-copy data movement** via Apache Arrow Flight
