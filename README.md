@@ -192,4 +192,4 @@ While Temporal provides a full workflow engine with many features, ValkeyFlight 
 
 ## License
 
-This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
+[MIT](LICENSE)
