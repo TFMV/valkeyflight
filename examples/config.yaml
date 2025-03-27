@@ -1,0 +1,54 @@
+# ValkeyFlight Transaction Processing Configuration
+
+# Flight Server Configuration
+flight:
+  address: "localhost:8080"
+  # Optional TLS configuration
+  # tls:
+  #   cert_file: "server.crt"
+  #   key_file: "server.key"
+
+# Valkey Coordinator Configuration
+valkey:
+  address: "localhost:6379"
+  password: ""
+  max_retries: 3
+  heartbeat_interval: "5s"
+
+# Worker Configuration
+workers:
+  count: 4
+  poll_interval: "1s"
+  backoff:
+    min: "500ms"
+    max: "30s"
+    factor: 2.0
+    randomization: 0.2
+
+# Data Generation Configuration
+data_generation:
+  record_count: 1000000
+  batch_size: 10000
+  output_dir: "./data"
+  seed: 42
+
+# Processing Configuration
+processing:
+  fraud_detection:
+    enabled: true
+    threshold: 0.8
+  enrichment:
+    enabled: true
+    geo_database: "./data/geo.db"
+
+# Output Configuration
+output:
+  format: "arrow"
+  directory: "./output"
+  file_prefix: "transactions_processed"
+
+# Monitoring Configuration
+monitoring:
+  enabled: true
+  metrics_port: 2112
+  log_level: "info"
